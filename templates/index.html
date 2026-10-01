@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComicCraft - AI Comic Story Creator</title>
+  <meta name="description" content="Generate complete 5-panel comic books with Gemini models, Stable Diffusion illustrations, and instant PDF download.">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Scenic Background Backdrop -->
+  <div class="scenic-background" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="logo" id="header-logo-link">
+        <span class="logo-badge">CC</span>
+        <span class="logo-text">Comic<span>Craft</span></span>
+      </a>
+      <nav class="header-nav">
+        <a href="/docs" class="nav-link" target="_blank" id="api-docs-link">API Docs</a>
+        <a href="/test-image" class="nav-link" target="_blank" id="test-image-link">Test Image</a>
+        {% if mock_ai %}
+        <span class="badge-mode badge-mock" title="Running in simulated AI mode (Zero API cost)">Mock AI Active</span>
+        {% else %}
+        <span class="badge-mode badge-live" title="Running with live Gemini & Image providers">Live AI Connected</span>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Hero Intro -->
+    <section class="hero">
+      <div class="hero-pill">
+        <span>Powered by Google Gemini & Stable Diffusion</span>
+      </div>
+      <h1 class="hero-title">
+        Bring Your Stories to Life in <span class="gradient-text">Vivid Comic Strips</span>
+      </h1>
+      <p class="hero-subtitle">
+        Enter your story concept and character details. Our multi-model generative AI pipeline plans the story arc, crafts narrative dialogue, illustrates every panel, and formats a downloadable comic PDF.
+      </p>
+    </section>
+
+    <!-- Comic Creation Studio Card -->
+    <section class="card" id="studio-card">
+      <!-- Quick Presets -->
+      <div class="presets-section">
+        <div class="presets-label">
+          <span>⚡ Try a Quick Story Preset:</span>
+        </div>
+        <div class="preset-buttons">
+          <button type="button" class="preset-btn" data-preset="fox" id="preset-fox">
+            <span>🦊</span> Enchanted Fox Explorer
+          </button>
+          <button type="button" class="preset-btn" data-preset="cyber" id="preset-cyber">
+            <span>⚡</span> Cyberpunk Detective
+          </button>
+          <button type="button" class="preset-btn" data-preset="space" id="preset-space">
+            <span>🚀</span> Interstellar Monolith
+          </button>
+          <button type="button" class="preset-btn" data-preset="kingdom" id="preset-kingdom">
+            <span>👑</span> The Royal Frog Curse
+          </button>
+        </div>
+      </div>
+
+      <!-- Comic Generation Form -->
+      <form action="/generate" method="POST" id="comic-generator-form" class="comic-form">
+        <!-- Story Prompt -->
+        <div class="form-group">
+          <label for="story_prompt">
+            Story Prompt <span class="required">*</span>
+          </label>
+          <textarea
+            id="story_prompt"
+            name="story_prompt"
+            class="form-control"
+            placeholder="Describe the main idea or adventure for your comic (e.g., A brave fox exploring an ancient enchanted forest discovers a glowing mystical crystal...)"
+            required
+            rows="3"
+          >A brave fox exploring an enchanted forest uncovers an ancient glowing relic that awakens slumbering woodland guardians.</textarea>
+          <span class="hint-text">Provide the narrative premise. Gemini Flash will outline a structured 5-panel arc from this.</span>
+        </div>
+
+        <!-- Main Character Name -->
+        <div class="form-group">
+          <label for="character_name">
+            Main Character Name <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="character_name"
+            name="character_name"
+            class="form-control"
+            placeholder="e.g., Free the Red Fox, Captain Vance, Jax"
+            value="Free the Fox"
+            required
+          >
+          <span class="hint-text">The protagonist will remain visually and narratively consistent across all 5 panels.</span>
+        </div>
+
+        <!-- Setting, Tone, Art Style Row -->
+        <div class="form-row">
+          <!-- Setting -->
+          <div class="form-group">
+            <label for="setting">
+              Setting <span class="required">*</span>
+            </label>
+            <select id="setting" name="setting" class="form-control" required>
+              <option value="Enchanted Forest" selected>Enchanted Forest</option>
+              <option value="School">School</option>
+              <option value="City">City</option>
+              <option value="Space">Space</option>
+              <option value="Fantasy Kingdom">Fantasy Kingdom</option>
+              <option value="Cyberpunk Metropolis">Cyberpunk Metropolis</option>
+              <option value="Haunted Victorian Manor">Haunted Victorian Manor</option>
+              <option value="Deep Ocean Trench">Deep Ocean Trench</option>
+            </select>
+          </div>
+
+          <!-- Story Tone -->
+          <div class="form-group">
+            <label for="tone">
+              Story Tone
+            </label>
+            <select id="tone" name="tone" class="form-control">
+              <option value="Dramatic" selected>Dramatic</option>
+              <option value="Funny">Funny</option>
+              <option value="Light-hearted">Light-hearted</option>
+              <option value="Poetic">Poetic</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Mystery">Mystery</option>
+              <option value="Epic">Epic</option>
+            </select>
+          </div>
+
+          <!-- Art Style -->
+          <div class="form-group">
+            <label for="art_style">
+              Art Style
+            </label>
+            <select id="art_style" name="art_style" class="form-control">
+              <option value="Comic Book" selected>Comic Book</option>
+              <option value="Anime">Anime</option>
+              <option value="Pixel Art">Pixel Art</option>
+              <option value="Realistic">Realistic</option>
+              <option value="Fantasy Illustration">Fantasy Illustration</option>
+              <option value="Vintage 1950s Pulp">Vintage 1950s Pulp</option>
+              <option value="Watercolor Sketch">Watercolor Sketch</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary" id="btn-generate-comic">
+          <span>✨ Generate 5-Panel Comic Strip</span>
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Animated Loading Overlay -->
+  <div class="loading-overlay" id="loading-overlay" aria-hidden="true">
+    <div class="loading-content">
+      <div class="comic-spinner"></div>
+      <h2 class="loading-title">CRAFTING YOUR COMIC...</h2>
+      <div class="loading-step" id="loading-step">Initializing multi-model generation pipeline...</div>
+      <div class="progress-track">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <p class="loading-note">
+        Gemini is creating the story while Diffusion generates custom illustrations for each panel. This may take a few moments.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>ComicCraft &copy; 2026 &bull; Built with FastAPI, Google Gemini Models, Hugging Face Diffusers, and FPDF2.</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/script.js"></script>
+</body>
+</html>

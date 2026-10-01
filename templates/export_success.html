@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comic Exported Successfully! | ComicCraft</title>
+  <meta name="description" content="Your AI-powered comic has been successfully generated and exported as PDF.">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="logo">
+        <span class="logo-badge">CC</span>
+        <span class="logo-text">Comic<span>Craft</span></span>
+      </a>
+      <nav class="header-nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/docs" class="nav-link" target="_blank">API Docs</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    <div class="card success-card" id="export-success-card">
+      <div class="success-icon" aria-hidden="true">✔</div>
+      <h1>Comic Exported Successfully!</h1>
+      <p>
+        Your AI-powered comic has been successfully created! Dive back in and bring another story to life.
+      </p>
+
+      <div class="success-actions">
+        {% if pdf_path %}
+        <a href="{{ pdf_path }}" class="btn-primary" id="btn-redownload-pdf" download>
+          <span>📥 Re-download Comic PDF</span>
+        </a>
+        <a href="{{ pdf_path }}" class="btn-secondary" id="btn-view-pdf-tab" target="_blank">
+          <span>👁️ Open PDF in New Tab</span>
+        </a>
+        {% endif %}
+
+        <a href="/" class="btn-secondary" id="btn-create-another-success" style="margin-top: 1rem;">
+          <span>✨ Go Create Another Comic</span>
+        </a>
+        <a href="/" class="nav-link" id="btn-return-home" style="margin-top: 0.5rem;">
+          Return Home
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>ComicCraft &bull; AI Comic Story Creator &bull; Powered by Google Gemini &amp; Stable Diffusion</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/script.js"></script>
+</body>
+</html>
