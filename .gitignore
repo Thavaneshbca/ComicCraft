@@ -47,3 +47,8 @@ static/exports/*
 .pytest_cache/
 .coverage
 htmlcov/
+
+# OS generated files
+desktop.ini
+.DS_Store
+
